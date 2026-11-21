@@ -248,3 +248,17 @@ def test_bootstrap_hourly_sharpes_full_length_block():
         rtol=0,
         atol=1e-12,
     )
+
+
+def test_bootstrap_rejects_constant_returns():
+    returns = np.ones(100)
+
+    with pytest.raises(ValueError, match="constant returns"):
+        bootstrap_hourly_sharpes(returns)
+
+
+def test_bootstrap_rejects_short_input():
+    returns = np.arange(10, dtype=float)
+
+    with pytest.raises(ValueError, match="block_size"):
+        bootstrap_hourly_sharpes(returns, block_size=24)

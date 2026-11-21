@@ -125,6 +125,17 @@ def bootstrap_hourly_sharpes(
     centered_returns = returns - np.mean(returns)
     n = len(centered_returns)
 
+
+    if n < 2:
+        raise ValueError("At least two returns are required.")
+
+    if block_size < 1 or block_size > n:
+        raise ValueError("block_size must be between 1 and the number of returns.")
+
+    if np.all(returns == returns[0]):
+        raise ValueError("Cannot calculate Sharpe ratios for constant returns.")
+
+
     blocks_needed = int(np.ceil(n / block_size))
     bootstrap_sharpes = []
 
